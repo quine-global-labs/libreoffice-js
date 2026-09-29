@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Text context menu; format of core/sw/uiconfig/swriter/popupmenu/text.xml -->
+<menu:menupopup xmlns:menu="http://openoffice.org/2001/menu">
+  <menu:menuitem menu:id=".uno:Cut"/>
+  <menu:menuitem menu:id=".uno:Copy"/>
+  <menu:menuitem menu:id=".uno:Paste"/>
+  <menu:menuitem menu:id=".uno:PasteUnformatted"/>
+  <menu:menuseparator/>
+  <menu:menu menu:id=".uno:FormatTextMenu">
+    <menu:menupopup>
+      <menu:menuitem menu:id=".uno:Bold"/>
+      <menu:menuitem menu:id=".uno:Italic"/>
+      <menu:menuitem menu:id=".uno:Underline"/>
+      <menu:menuitem menu:id=".uno:Strikeout"/>
+      <menu:menuseparator/>
+      <menu:menuitem menu:id=".uno:SuperScript"/>
+      <menu:menuitem menu:id=".uno:SubScript"/>
+    </menu:menupopup>
+  </menu:menu>
+  <menu:menu menu:id=".uno:AlignTextMenu">
+    <menu:menupopup>
+      <menu:menuitem menu:id=".uno:LeftPara"/>
+      <menu:menuitem menu:id=".uno:CenterPara"/>
+      <menu:menuitem menu:id=".uno:RightPara"/>
+      <menu:menuitem menu:id=".uno:JustifyPara"/>
+    </menu:menupopup>
+  </menu:menu>
+  <menu:menu menu:id=".uno:FormatBulletsMenu">
+    <menu:menupopup>
+      <menu:menuitem menu:id=".uno:DefaultBullet"/>
+      <menu:menuitem menu:id=".uno:DefaultNumbering"/>
+      <menu:menuseparator/>
+      <menu:menuitem menu:id=".uno:IncrementIndent"/>
+      <menu:menuitem menu:id=".uno:DecrementIndent"/>
+    </menu:menupopup>
+  </menu:menu>
+  <menu:menuseparator/>
+  <menu:menuitem menu:id=".uno:ResetAttributes"/>
+  <menu:menuitem menu:id=".uno:FontDialog"/>
+  <menu:menuitem menu:id=".uno:ParagraphDialog"/>
+  <menu:menuseparator/>
+  <menu:menuitem menu:id=".uno:SelectAll"/>
+</menu:menupopup>

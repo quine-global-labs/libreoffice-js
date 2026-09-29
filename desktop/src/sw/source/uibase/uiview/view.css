@@ -1,0 +1,160 @@
+/* Writer frame layout: menu/toolbars on top, document + sidebar, status bar. */
+
+.lo-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lo-workarea {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.lo-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ruler (svtools) */
+.svt-ruler {
+  flex: none;
+  padding: 2px 16px;
+  background: var(--lo-bg);
+  border-bottom: 1px solid var(--lo-border-soft);
+  overflow: hidden;
+}
+
+.svt-ruler-margin {
+  fill: var(--lo-border-soft);
+}
+
+.svt-ruler-text {
+  fill: var(--lo-bg-field);
+}
+
+.svt-ruler-tick {
+  stroke: var(--lo-text-dim);
+  stroke-width: 1;
+}
+
+.svt-ruler-num {
+  font-size: 9px;
+  fill: var(--lo-text-dim);
+}
+
+.svt-ruler-indent {
+  fill: var(--lo-text-dim);
+}
+
+/* Sidebar (sfx2) */
+.sfx-sidebar {
+  display: flex;
+  flex: none;
+  border-left: 1px solid var(--lo-border);
+  background: var(--lo-bg);
+}
+
+.sfx-deck {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  border-right: 1px solid var(--lo-border-soft);
+}
+
+.sfx-deck-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid var(--lo-border-soft);
+}
+
+.sfx-deck-title button {
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+}
+
+.sfx-deck-title button:hover {
+  background: var(--lo-hover);
+}
+
+.sfx-deck-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sfx-tabbar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 4px;
+}
+
+.sfx-stylelist-family {
+  padding: 8px 12px 4px;
+  color: var(--lo-text-dim);
+  font-size: 12px;
+}
+
+.sfx-stylelist ul,
+.sw-navigator ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 6px 8px;
+}
+
+.sfx-stylelist li,
+.sw-navigator li {
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sfx-stylelist li:hover,
+.sw-navigator li:hover {
+  background: var(--lo-hover);
+}
+
+.sfx-stylelist li[aria-selected="true"],
+.sw-navigator li[aria-selected="true"] {
+  background: var(--lo-checked);
+}
+
+.sw-navigator-empty {
+  margin: 4px 12px;
+  color: var(--lo-text-dim);
+}
+
+/* Word count dialog */
+.sw-wordcount {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sw-wordcount th,
+.sw-wordcount td {
+  padding: 4px 6px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sw-wordcount tbody th {
+  text-align: left;
+  font-weight: normal;
+}
+
+.sw-wordcount thead th {
+  color: var(--lo-text-dim);
+  font-weight: 600;
+}

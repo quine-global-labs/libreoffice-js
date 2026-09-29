@@ -1,0 +1,98 @@
+/* svx controls: palette, zoom slider, sidebar panels, search dialog. */
+
+.svx-palette {
+  display: grid;
+  grid-template-columns: repeat(12, 18px);
+  gap: 3px;
+  padding: 6px 4px 4px;
+}
+
+.svx-palette-cell {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.svx-palette-cell:hover {
+  outline: 2px solid var(--lo-accent);
+  outline-offset: 1px;
+}
+
+.svx-zoomslider {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.svx-zoomslider button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--lo-text-dim);
+  line-height: 1;
+}
+
+.svx-zoomslider button:hover {
+  background: var(--lo-hover);
+}
+
+.svx-zoomslider input[type="range"] {
+  width: 110px;
+  accent-color: var(--lo-accent);
+}
+
+.svx-panel {
+  border-bottom: 1px solid var(--lo-border-soft);
+  padding: 8px 10px 12px;
+}
+
+.svx-panel-title {
+  font-weight: 600;
+  margin: 2px 0 8px;
+}
+
+.svx-panel-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.svx-panel-row > label {
+  color: var(--lo-text-dim);
+  min-width: 64px;
+}
+
+.svx-panel .vcl-combobox {
+  margin: 0;
+}
+
+.svx-panel .vcl-toolbox-button {
+  min-width: 26px;
+  height: 26px;
+}
+
+.svx-search-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.svx-search-options {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.svx-search-status {
+  min-height: 18px;
+  margin-top: 10px;
+  color: var(--lo-text-dim);
+}

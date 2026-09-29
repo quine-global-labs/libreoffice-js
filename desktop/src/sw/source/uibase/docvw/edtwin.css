@@ -1,0 +1,140 @@
+/* Document window: scroll area, pages and text frames. */
+
+.sw-scrollwin {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px 16px 0;
+  background: var(--lo-app-bg);
+}
+
+.sw-sizer {
+  margin: 0 auto;
+}
+
+.sw-pages {
+  transform-origin: 0 0;
+  padding-bottom: 1px;
+  outline: none;
+  color: #000000;
+  caret-color: #000000;
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.sw-page {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sw-body {
+  position: relative;
+}
+
+.sw-para {
+  position: relative;
+}
+
+.sw-txt {
+  position: relative;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  tab-size: 1.25cm;
+  font-kerning: normal;
+}
+
+/* List label (SwTextFormatter::NewNumberPortion). */
+.sw-txt[data-label]::before {
+  content: attr(data-label);
+  position: absolute;
+  left: -0.635cm;
+  width: 0.5cm;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Formatting marks (View > Formatting Marks). */
+.sw-show-marks .sw-txt > span:last-of-type::after,
+.sw-show-marks .sw-txt[data-empty]::after {
+  content: "¶";
+  color: #729fcf;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  display: inline;
+}
+
+.sw-show-marks .sw-txt[data-empty]::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sw-show-marks .sw-page {
+  outline: 1px dashed transparent;
+}
+
+.sw-show-marks .sw-body {
+  outline: 1px solid #c0c0c0;
+}
+
+::highlight(sw-inactive-selection) {
+  background-color: rgba(114, 159, 207, 0.35);
+}
+
+.sw-pages ::selection {
+  background: rgba(114, 159, 207, 0.55);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body,
+  #root {
+    overflow: visible !important;
+    height: auto !important;
+    background: #ffffff;
+  }
+
+  .lo-app > :not(.lo-workarea),
+  .lo-workarea > :not(.lo-main),
+  .lo-main > :not(.sw-scrollwin),
+  .vcl-dialog,
+  .vcl-dialog-overlay {
+    display: none !important;
+  }
+
+  .lo-app,
+  .lo-workarea,
+  .lo-main,
+  .sw-scrollwin {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    height: auto !important;
+    background: #ffffff !important;
+  }
+
+  .sw-sizer {
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .sw-pages {
+    transform: none !important;
+  }
+
+  .sw-page {
+    box-shadow: none;
+    margin: 0 !important;
+    break-after: page;
+  }
+
+  .sw-show-marks .sw-body {
+    outline: none;
+  }
+}

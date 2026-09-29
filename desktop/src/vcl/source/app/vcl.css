@@ -1,0 +1,455 @@
+/*
+ * VCL widget look — the role of vcl's style settings / native widget
+ * drawing. Colours are tokens so the chrome follows the system theme; the
+ * document canvas itself stays paper-white, as in LibreOffice.
+ */
+:root {
+  --lo-bg: #efefef;
+  --lo-bg-raised: #fbfbfb;
+  --lo-bg-field: #ffffff;
+  --lo-border: #c8c8c8;
+  --lo-border-soft: #dcdcdc;
+  --lo-text: #1e1e1e;
+  --lo-text-dim: #6a6a6a;
+  --lo-text-disabled: #a6a6a6;
+  --lo-hover: #dddddd;
+  --lo-pressed: #cdcdcd;
+  --lo-checked: #cfdff3;
+  --lo-checked-border: #8eb1dd;
+  --lo-accent: #1c5fa8;
+  --lo-accent-text: #ffffff;
+  --lo-app-bg: #d5d5d5;
+  --lo-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --lo-popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  --lo-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Cantarell", sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --lo-bg: #2c2c2c;
+    --lo-bg-raised: #333333;
+    --lo-bg-field: #1f1f1f;
+    --lo-border: #4a4a4a;
+    --lo-border-soft: #3d3d3d;
+    --lo-text: #e8e8e8;
+    --lo-text-dim: #a0a0a0;
+    --lo-text-disabled: #6a6a6a;
+    --lo-hover: #3d3d3d;
+    --lo-pressed: #474747;
+    --lo-checked: #2f4a6b;
+    --lo-checked-border: #4d78ad;
+    --lo-accent: #4a8fd8;
+    --lo-app-bg: #1b1b1b;
+    --lo-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    --lo-popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  --lo-bg: #2c2c2c;
+  --lo-bg-raised: #333333;
+  --lo-bg-field: #1f1f1f;
+  --lo-border: #4a4a4a;
+  --lo-border-soft: #3d3d3d;
+  --lo-text: #e8e8e8;
+  --lo-text-dim: #a0a0a0;
+  --lo-text-disabled: #6a6a6a;
+  --lo-hover: #3d3d3d;
+  --lo-pressed: #474747;
+  --lo-checked: #2f4a6b;
+  --lo-checked-border: #4d78ad;
+  --lo-accent: #4a8fd8;
+  --lo-app-bg: #1b1b1b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--lo-bg);
+  color: var(--lo-text);
+  font: 13px/1.3 var(--lo-font);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---- Menu bar / menus (vcl/source/window/menu.cxx) ---------------------- */
+
+.vcl-menubar {
+  display: flex;
+  align-items: stretch;
+  height: 26px;
+  padding: 0 4px;
+  background: var(--lo-bg);
+  border-bottom: 1px solid var(--lo-border-soft);
+}
+
+.vcl-menubar-item {
+  padding: 0 9px;
+  border: 0;
+  background: none;
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
+.vcl-menubar-item:hover,
+.vcl-menubar-item[data-open] {
+  background: var(--lo-hover);
+}
+
+.vcl-menu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 220px;
+  padding: 4px;
+  background: var(--lo-bg-raised);
+  border: 1px solid var(--lo-border);
+  border-radius: 6px;
+  box-shadow: var(--lo-popup-shadow);
+}
+
+.vcl-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.vcl-menu-item:not(:disabled):hover,
+.vcl-menu-item[data-open] {
+  background: var(--lo-accent);
+  color: var(--lo-accent-text);
+}
+
+.vcl-menu-item:disabled {
+  color: var(--lo-text-disabled);
+}
+
+.vcl-menu-item .vcl-menu-check,
+.vcl-menu-item .vcl-menu-icon {
+  width: 16px;
+  display: inline-flex;
+  justify-content: center;
+  flex: none;
+}
+
+.vcl-menu-item .vcl-menu-label {
+  flex: 1;
+}
+
+.vcl-menu-item .vcl-menu-accel {
+  color: var(--lo-text-dim);
+  margin-left: 24px;
+}
+
+.vcl-menu-item:not(:disabled):hover .vcl-menu-accel {
+  color: inherit;
+}
+
+.vcl-menu-separator {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--lo-border-soft);
+}
+
+/* ---- ToolBox (vcl/source/window/toolbox.cxx) --------------------------- */
+
+.vcl-toolbox {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1px;
+  min-height: 34px;
+  padding: 2px 6px;
+  background: var(--lo-bg);
+}
+
+.vcl-toolbox + .vcl-toolbox {
+  border-top: 1px solid var(--lo-border-soft);
+}
+
+.vcl-toolbox-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--lo-text);
+}
+
+.vcl-toolbox-button:not(:disabled):hover {
+  background: var(--lo-hover);
+}
+
+.vcl-toolbox-button:not(:disabled):active {
+  background: var(--lo-pressed);
+}
+
+.vcl-toolbox-button[aria-pressed="true"] {
+  background: var(--lo-checked);
+  border-color: var(--lo-checked-border);
+}
+
+.vcl-toolbox-button:disabled {
+  color: var(--lo-text-disabled);
+}
+
+.vcl-toolbox-separator {
+  width: 1px;
+  height: 20px;
+  margin: 0 5px;
+  background: var(--lo-border);
+}
+
+.vcl-split-button {
+  display: inline-flex;
+  border-radius: 4px;
+}
+
+.vcl-split-button > .vcl-toolbox-button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-right: 3px;
+}
+
+.vcl-split-button > .vcl-toolbox-button:last-child {
+  min-width: 14px;
+  padding: 0 1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.vcl-color-swatch {
+  display: block;
+  width: 18px;
+  height: 4px;
+  margin-top: -3px;
+  border-radius: 1px;
+}
+
+/* ---- Fields (vcl/source/control/combobox.cxx, field.cxx) --------------- */
+
+.vcl-combobox {
+  position: relative;
+  display: inline-flex;
+  height: 26px;
+  margin: 0 2px;
+  border: 1px solid var(--lo-border);
+  border-radius: 4px;
+  background: var(--lo-bg-field);
+}
+
+.vcl-combobox:focus-within {
+  border-color: var(--lo-accent);
+  outline: 1px solid var(--lo-accent);
+}
+
+.vcl-combobox input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.vcl-combobox-drop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  border: 0;
+  border-left: 1px solid var(--lo-border-soft);
+  background: none;
+  color: var(--lo-text-dim);
+}
+
+.vcl-combobox-list {
+  position: fixed;
+  z-index: 1000;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 3px;
+  background: var(--lo-bg-raised);
+  border: 1px solid var(--lo-border);
+  border-radius: 6px;
+  box-shadow: var(--lo-popup-shadow);
+}
+
+.vcl-combobox-option {
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.vcl-combobox-option:hover,
+.vcl-combobox-option[aria-selected="true"] {
+  background: var(--lo-accent);
+  color: var(--lo-accent-text);
+}
+
+.vcl-field {
+  height: 26px;
+  padding: 0 6px;
+  border: 1px solid var(--lo-border);
+  border-radius: 4px;
+  background: var(--lo-bg-field);
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.vcl-field:focus {
+  border-color: var(--lo-accent);
+  outline: 1px solid var(--lo-accent);
+}
+
+.vcl-button {
+  height: 28px;
+  padding: 0 14px;
+  border: 1px solid var(--lo-border);
+  border-radius: 5px;
+  background: var(--lo-bg-raised);
+}
+
+.vcl-button:not(:disabled):hover {
+  background: var(--lo-hover);
+}
+
+.vcl-button:disabled {
+  color: var(--lo-text-disabled);
+}
+
+.vcl-button[data-default] {
+  background: var(--lo-accent);
+  border-color: var(--lo-accent);
+  color: var(--lo-accent-text);
+}
+
+.vcl-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---- Dialogs (vcl/source/window/dialog.cxx) ----------------------------- */
+
+.vcl-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.vcl-dialog {
+  position: fixed;
+  z-index: 901;
+  min-width: 320px;
+  max-width: min(640px, calc(100vw - 32px));
+  background: var(--lo-bg);
+  border: 1px solid var(--lo-border);
+  border-radius: 8px;
+  box-shadow: var(--lo-popup-shadow);
+}
+
+.vcl-dialog-overlay > .vcl-dialog {
+  position: relative;
+}
+
+.vcl-dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 14px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--lo-border-soft);
+  cursor: move;
+}
+
+.vcl-dialog-title button {
+  border: 0;
+  background: none;
+  border-radius: 4px;
+  display: inline-flex;
+  padding: 2px;
+}
+
+.vcl-dialog-title button:hover {
+  background: var(--lo-hover);
+}
+
+.vcl-dialog-body {
+  padding: 14px;
+}
+
+.vcl-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 14px 14px;
+}
+
+/* ---- Status bar (vcl/source/window/status.cxx) -------------------------- */
+
+.vcl-statusbar {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--lo-text-dim);
+  background: var(--lo-bg);
+  border-top: 1px solid var(--lo-border-soft);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.vcl-statusbar-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  border-right: 1px solid var(--lo-border-soft);
+}
+
+.vcl-statusbar-item:last-child {
+  border-right: 0;
+}
+
+.vcl-statusbar-item[data-flex] {
+  flex: 1;
+}
